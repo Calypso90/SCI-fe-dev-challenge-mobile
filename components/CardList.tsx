@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Card from "./Card";
 import { searchCards } from "../api/api";
+import Loader from "./Loader";
 
 type CardData = {
   set: string;
@@ -117,7 +118,12 @@ export default function CardList({ hp }: CardListProps) {
   );
 
   if (loading) {
-    return <Text style={styles.messageText}>Loading cards...</Text>;
+    return (
+      <View style={styles.loaderContainer}>
+        {" "}
+        <Loader color="#06dd87" />
+      </View>
+    );
   }
 
   if (error) {
@@ -132,6 +138,7 @@ export default function CardList({ hp }: CardListProps) {
         {renderSortButton("Cost", "cost", "#8B5CF6")}
         {renderSortButton("Power", "power", "#EF4444")}
       </View>
+
       <FlatList
         data={cards}
         renderItem={({ item }) => <Card {...item} />}
@@ -176,6 +183,11 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingBottom: 16,
+  },
+  loaderContainer: {
+    flex: 1, // Take up the full screen
+    justifyContent: "center", // Vertically center the loader
+    alignItems: "center", // Horizontally center the loader
   },
   messageText: {
     textAlign: "center",
