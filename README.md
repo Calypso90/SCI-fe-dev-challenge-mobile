@@ -2,14 +2,24 @@
 
 A Mobile-first Expo app for displaying Star Wars Unlimited cards, with opportunities for enhancement and optimization. This project uses [Expo](https://expo.dev) with TypeScript and React Native.
 
+## Features
+
+**Modal that displays card information, providing a detailed view of a selected card.
+**The sort buttons when selected apply a glowing shadow effect and a different background color
+**Conditional rendering is used to display only the card information that is available
+**A loading animation is displayed while data is being fetched
+
 ## 🚀 Getting Started
 
-1. Install dependencies:
+1. Clone Github repo (https://github.com/Calypso90/SCI-fe-dev-challenge-mobile)
+
+2. Install dependencies:
+
    ```bash
    yarn install
    ```
 
-2. Start the development environment:
+3. Start the development environment:
    ```bash
    # The app requires a proxy for API access
    yarn web-with-proxy   # For web development
@@ -18,25 +28,6 @@ A Mobile-first Expo app for displaying Star Wars Unlimited cards, with opportuni
    # or
    yarn android-with-proxy # For Android
    ```
-
-> **Note**: You might encounter some lint and test issues when first starting the app. This is intentional - fixing these is part of the challenge!
-
-## 🎯 Challenge Tasks
-
-1. **Fix and Run**:
-   - Address any lint or test errors you encounter
-   - Get the app running with the proxy service
-   - Ensure proper data fetching and display
-
-2. **Enhance the UI**:
-   - Add animations to the cards (e.g., on hover, sort, or load)
-   - Consider using react-native-reanimated or your preferred animation approach
-   - Optimize the layout for both mobile and web views
-
-3. **Optimize Performance**:
-   - Consider implementing loading states
-   - Handle edge cases in data fetching
-   - Optimize sorting operations
 
 ## 🛠️ Development Tools
 
@@ -55,25 +46,13 @@ A Mobile-first Expo app for displaying Star Wars Unlimited cards, with opportuni
 ## 🧪 Testing
 
 The app includes unit tests for core functionality. Run them with:
+
 ```bash
 yarn test
 ```
-
-## 📝 Additional Notes
-
-- The app uses a proxy service to handle CORS and API access
-- You'll need to fix existing issues before the app will run properly
-- Consider adding features like:
-   - Dark mode support
-   - Loading animations
-   - Improved error handling
-   - Search functionality
-   - Responsive design improvements
 
 ## 📚 Resources
 
 - [Expo Documentation](https://docs.expo.dev/)
 - [React Native Animation Guide](https://reactnative.dev/docs/animations)
 - [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
-
-Good luck! We're excited to see your solutions and improvements! 🎉
