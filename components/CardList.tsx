@@ -4,7 +4,9 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  Modal,
   StyleSheet,
+  Image,
 } from "react-native";
 import Card from "./Card";
 import { searchCards } from "../api/api";
@@ -42,6 +44,8 @@ export default function CardList({ hp }: CardListProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<keyof CardData>("name");
+  const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (!hp) return;
@@ -130,6 +134,11 @@ export default function CardList({ hp }: CardListProps) {
     return <Text style={styles.errorText}>Error: {error}</Text>;
   }
 
+  const handleCardClick = (card: CardData) => {
+    setSelectedCard(card); // Store the clicked card's data
+    setModalVisible(true); // Show the modal
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.sortButtons}>
@@ -141,10 +150,78 @@ export default function CardList({ hp }: CardListProps) {
 
       <FlatList
         data={cards}
-        renderItem={({ item }) => <Card {...item} />}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => handleCardClick(item)}>
+            <Card {...item} />
+          </TouchableOpacity>
+        )}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
       />
+      {selectedCard && (
+        <Modal
+          visible={modalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: selectedCard.frontArt }}
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.modalTitle}>{selectedCard.name}</Text>
+                {selectedCard.set && (
+                  <Text style={styles.modalText}>Set: {selectedCard.set}</Text>
+                )}
+                {selectedCard.type && (
+                  <Text style={styles.modalText}>
+                    Type: {selectedCard.type}
+                  </Text>
+                )}
+                {selectedCard.traits && (
+                  <Text style={styles.modalText}>
+                    Traits: {selectedCard.traits}
+                  </Text>
+                )}
+                {selectedCard.cost && (
+                  <Text style={styles.modalText}>
+                    Cost: {selectedCard.cost}
+                  </Text>
+                )}
+                {selectedCard.power && (
+                  <Text style={styles.modalText}>
+                    Power: {selectedCard.power}
+                  </Text>
+                )}
+                {selectedCard.hp && (
+                  <Text style={styles.modalText}>HP: {selectedCard.hp}</Text>
+                )}
+                {selectedCard.rarity && (
+                  <Text style={styles.modalText}>
+                    Rarity: {selectedCard.rarity}
+                  </Text>
+                )}
+                {selectedCard.fronttext && (
+                  <Text style={styles.modalText}>{selectedCard.fronttext}</Text>
+                )}
+              </View>
+
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 }
@@ -185,9 +262,9 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   loaderContainer: {
-    flex: 1, // Take up the full screen
-    justifyContent: "center", // Vertically center the loader
-    alignItems: "center", // Horizontally center the loader
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   messageText: {
     textAlign: "center",
@@ -200,5 +277,60 @@ const styles = StyleSheet.create({
     color: "#EF4444",
     fontSize: 16,
     padding: 16,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.75)",
+  },
+  modalContent: {
+    width: "80%",
+    padding: 20,
+    backgroundColor: "#1D3D47",
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 15,
+    color: "#FFFFFF",
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: "#FFFFFF",
+  },
+  textContainer: {
+    alignSelf: "flex-start",
+    width: "100%",
+    marginBottom: 5,
+  },
+  closeButton: {
+    marginTop: 10,
+    backgroundColor: "#161719",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  closeButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  imageContainer: {
+    width: "100%",
+    height: 320,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+    overflow: "visible",
+  },
+  image: {
+    width: "100%",
+    height: 300,
+    margin: 10,
   },
 });
